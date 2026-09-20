@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 
 
 class DB_Map():
@@ -61,6 +62,7 @@ class DB_Map():
     def create_graph(self, path, cities):
         fig = plt.figure(figsize=(12, 6))
         ax = plt.axes(projection=ccrs.PlateCarree())
+        ax.add_feature(cfeature.OCEAN)
         ax.stock_img()
         ax.set_global()
         for city in cities:
@@ -68,9 +70,9 @@ class DB_Map():
             if coordinates is None:
                 continue
             lat, lng = coordinates
-            ax.plot(lng, lat, marker='o', color='red', markersize=6,
+            ax.plot(lng, lat, marker='x', color='green', markersize=6,
                     transform=ccrs.PlateCarree())
-            ax.text(lng + 2, lat + 2, city, fontsize=9, color='black',
+            ax.text(lng + 2, lat + 2, city, fontsize=7, color='blue',
                     transform=ccrs.PlateCarree())
         fig.savefig(path, dpi=150, bbox_inches='tight')
         plt.close(fig)
