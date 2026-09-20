@@ -77,8 +77,36 @@ class DB_Map():
         fig.savefig(path, dpi=150, bbox_inches='tight')
         plt.close(fig)
 
+    def haversine_distance(self, lat1, lon1, lat2, lon2):
+            """Вычисляет расстояние между двумя точками в километрах по формуле гаверсинуса."""
+            R = 6371.0  # радиус Земли в км
+            
+            lat1_rad = plt.radians(lat1)
+            lat2_rad = plt.radians(lat2)
+            delta_lat = plt.radians(lat2 - lat1)
+            delta_lon = plt.radians(lon2 - lon1)
+            
+            a = plt.sin(delta_lat / 2)**2 + \
+                plt.cos(lat1_rad) * plt.cos(lat2_rad) * plt.sin(delta_lon / 2)**2
+            c = 2 * plt.atan2(plt.sqrt(a), plt.sqrt(1 - a))
+            
+            distance = R * c
+            return distance
+
+
     def draw_distance(self, city1, city2):
-        pass
+        """Вычисляет и возвращает расстояние между двумя городами в км."""
+        coord1 = self.get_coordinates(city1)
+        coord2 = self.get_coordinates(city2)
+        
+        if coord1 is None or coord2 is None:
+            return None
+        
+        lat1, lng1 = coord1
+        lat2, lng2 = coord2
+        
+        distance = self.haversine_distance(lat1, lng1, lat2, lng2)
+        return distance
 
 
 if __name__=="__main__":
